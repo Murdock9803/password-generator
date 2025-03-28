@@ -108,7 +108,7 @@ function App() {
           </div>
         </div>
 
-        <div className='absolute bottom-[5px] left-[7px] text-cyan-300 tracking-light font-mono'>🚀 Made by <a className='text-blue-500' href="https://murdock9803.github.io/Ayush-Portfolio/">Ayush Sahu</a>, &#169; 2025</div>
+        <div className='absolute bottom-[5px] left-[7px] text-cyan-300 tracking-light font-mono'>🚀 Made by <a className='text-blue-500' target="_blank" href="https://murdock9803.github.io/Ayush-Portfolio/">Ayush Sahu</a>, &#169; 2025</div>
       </section>
     </>
   )
