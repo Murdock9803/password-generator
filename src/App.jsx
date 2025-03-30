@@ -13,16 +13,55 @@ function App() {
   const pswdGenerator = useCallback(()=>{
     let tempPswd = "";
     let str = "";
+    let alphaStr = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+    let numStr = "0123456789";
+    let charStr = "!@#$%^&*(){}_+`<>/?[]";
 
-    if (isAlphaAllowed){str += "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"};
-    if (isNumAllowed){str += "0123456789"};
-    if (isCharAllowed){str += "!@#$%^&*(){}_+`<>/?[]"};
-
-    for (let i=0; i < pswdLength; i++){
-      let randomIndex = Math.floor(Math.random()*str.length +1);
-
-      tempPswd += str.charAt(randomIndex);
+    // Check if no option is selected, so you don't get a password with only letters when nothing is selected
+    if (!isAlphaAllowed && !isNumAllowed && !isCharAllowed) {
+      setPswd("Select at least 1 type");
+      return;
     }
+
+    // Add the selected characters to the string of possibilities
+    if (isAlphaAllowed) str += alphaStr;
+    if (isNumAllowed) str += numStr;
+    if (isCharAllowed) str += charStr;
+
+    do {
+      tempPswd = "";
+
+      // Make it at least 2 characters of each type, so you don't get a password with only numbers
+      // and only letters when selecting all the types, for example
+      if (isAlphaAllowed) {
+        for (let i = 0; i < 2; i++) {
+          let randomIndex = Math.floor(Math.random() * alphaStr.length);
+          tempPswd += alphaStr.charAt(randomIndex);
+        }
+      }
+      if (isNumAllowed) {
+        for (let i = 0; i < 2; i++) {
+          let randomIndex = Math.floor(Math.random() * numStr.length);
+          tempPswd += numStr.charAt(randomIndex);
+        }
+      }
+      if (isCharAllowed) {
+        for (let i = 0; i < 2; i++) {
+          let randomIndex = Math.floor(Math.random() * charStr.length);
+          tempPswd += charStr.charAt(randomIndex);
+        }
+      }
+
+      // Randomize the rest of the password
+      const remainingLength = pswdLength - tempPswd.length;
+      for (let i = 0; i < remainingLength; i++) {
+        let randomIndex = Math.floor(Math.random() * str.length);
+        tempPswd += str.charAt(randomIndex);
+      }
+
+      // Trying to make it more random
+      tempPswd = tempPswd.split('').sort(() => Math.random() - 0.5).join('');
+    } while (tempPswd.length !== pswdLength);
 
     setPswd(tempPswd);
   }, [pswdLength, isAlphaAllowed, isNumAllowed, isCharAllowed, setPswd])
